@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anas Bolm Iptv</title>
+  <!-- استيراد خط Cairo من Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ======== RESET & BASE ======== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    a {
+      color: #00c6ff;
+    }
+    ul {
+      list-style: none;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+    /* ======== HEADER & NAVBAR ======== */
+    header {
+      width: 100%;
+      max-width: 1000px;
+      padding: 10px 20px;
+      margin: 10px auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      border-radius: 10px;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    nav ul li a {
+      color: #fff;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    nav ul li a:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    #time {
+      font-size: 1rem;
+    }
+    /* ======== MAIN ======== */
+    main {
+      width: 100%;
+      max-width: 1000px;
+      padding: 20px;
+    }
+    main section {
+      display: none;
+      animation: fadeIn 0.4s forwards;
+      margin-bottom: 40px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h2 {
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+    p {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .back-btn {
+      display: block;
+      margin-bottom: 20px;
+      background: #ff7e5f;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 5px;
+      font-weight: 700;
+      transition: background 0.3s;
+    }
+    .back-btn:hover {
+      background: #feb47b;
+    }
+    /* ======== شبكات البطاقات ======== */
+    .categories-grid,
+    .channels-list,
+    .radio-grid {
+      display: grid;
+      gap: 15px;
+    }
+    .categories-grid {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+    .channels-list,
+    .radio-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    .category-card,
+    .channel-item,
+    .radio-station {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(5px);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      transition: background 0.3s;
+    }
+    .category-card:hover,
+    .channel-item:hover,
+    .radio-station:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    /* ======== مشغل IPTV ======== */
+    .player-container {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    #tv-video {
+      width: 100%;
+      max-height: 400px;
+      border-radius: 10px;
+      background: #000;
+      margin-bottom: 15px;
+    }
+    .player-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .player-btn {
+      background: #444;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-weight: 700;
+      transition: background 0.3s;
+    }
+    .player-btn:hover {
+      background: #666;
+    }
+    .channel-title,
+    .radio-title {
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    /* ======== مشغل الراديو ======== */
+    .radio-container {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    #radio-audio {
+      width: 100%;
+      margin-bottom: 15px;
+      outline: none;
+    }
+    .radio-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .radio-visual {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+    /* ======== IPTV مخصص ======== */
+    #custom-iptv input[type="text"] {
+      width: 80%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    #custom-iptv button {
+      background: #0072ff;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 5px;
+      font-weight: 700;
+      transition: background 0.3s;
+    }
+    #custom-iptv button:hover {
+      background: #005bb5;
+    }
+    /* ======== صفحة الإعدادات ======== */
+    .settings-container {
+      max-width: 500px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    /* ======== FOOTER ======== */
+    footer {
+      width: 100%;
+      max-width: 1000px;
+      text-align: center;
+      padding: 15px;
+      margin-top: auto;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(5px);
+      border-radius: 10px;
+    }
+    .morocco-logo {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER & NAVIGATION -->
+  <header>
+    <div class="logo">Anas Bolm Iptv</div>
+    <nav>
+      <ul>
+        <li><a href="#" onclick="showSection('home')">الرئيسية</a></li>
+        <li><a href="#" onclick="showSection('tv-categories')">IPTV</a></li>
+        <li><a href="#" onclick="showSection('radio-list')">الراديو</a></li>
+        <li><a href="#" onclick="showSection('custom-iptv')">IPTV مخصص</a></li>
+        <li><a href="#" onclick="showSection('about')">من نحن</a></li>
+        <li><a href="#" onclick="showSection('settings')">الإعدادات</a></li>
+      </ul>
+    </nav>
+    <div id="time"></div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <!-- الصفحة الرئيسية -->
+    <section id="home">
+      <h2>مرحبًا بكم في Anas Bolm Iptv</h2>
+      <p>أفضل منصة لعرض IPTV والراديو مع تجربة مستخدم متطورة واحترافية.</p>
+      <p>لا تنسوا الصلاة والسلام على رسول الله صلى الله عليه وسلم.</p>
+    </section>
+
+    <!-- صفحة تصنيفات IPTV -->
+    <section id="tv-categories">
+      <button class="back-btn" onclick="showSection('home')">عودة</button>
+      <h2>اختر فئة IPTV</h2>
+      <div class="categories-grid" id="categories-grid">
+        <!-- ستضاف التصنيفات ديناميكيًا -->
+      </div>
+    </section>
+
+    <!-- قائمة قنوات IPTV -->
+    <section id="tv-channels">
+      <button class="back-btn" onclick="showSection('tv-categories')">عودة</button>
+      <h2>قائمة القنوات</h2>
+      <div class="channels-list" id="channels-list">
+        <!-- ستضاف القنوات هنا -->
+      </div>
+    </section>
+
+    <!-- مشغل IPTV -->
+    <section id="tv-player">
+      <button class="back-btn" onclick="showSection('tv-channels')">عودة</button>
+      <div class="player-container">
+        <h3 class="channel-title" id="channel-title"></h3>
+        <video id="tv-video" controls></video>
+        <div class="player-controls">
+          <button class="player-btn" onclick="playVideo()">تشغيل</button>
+          <button class="player-btn" onclick="pauseVideo()">إيقاف مؤقت</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- قائمة إذاعات الراديو -->
+    <section id="radio-list">
+      <button class="back-btn" onclick="showSection('home')">عودة</button>
+      <h2>اختر إذاعة للاستماع</h2>
+      <div class="radio-grid" id="radio-grid">
+        <!-- ستضاف محطات الراديو هنا -->
+      </div>
+    </section>
+
+    <!-- مشغل الراديو -->
+    <section id="radio-player">
+      <button class="back-btn" onclick="showSection('radio-list')">عودة</button>
+      <div class="radio-container">
+        <div class="radio-visual">🔊</div>
+        <h3 class="radio-title" id="radio-title"></h3>
+        <audio id="radio-audio" controls></audio>
+        <div class="radio-controls">
+          <button class="player-btn" onclick="playRadio()">تشغيل</button>
+          <button class="player-btn" onclick="pauseRadio()">إيقاف مؤقت</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- صفحة IPTV مخصص -->
+    <section id="custom-iptv">
+      <button class="back-btn" onclick="showSection('home')">عودة</button>
+      <h2>IPTV مخصص</h2>
+      <p>أدخل رابط M3U الخاص بك لتحميل القنوات:</p>
+      <input type="text" id="custom-url" placeholder="أدخل رابط M3U هنا" />
+      <button onclick="loadCustomIPTV()">تحميل</button>
+      <div class="channels-list" id="custom-channels-list">
+        <!-- ستظهر قائمة القنوات هنا -->
+      </div>
+    </section>
+
+    <!-- صفحة من نحن -->
+    <section id="about">
+      <button class="back-btn" onclick="showSection('home')">عودة</button>
+      <h2>من نحن</h2>
+      <p>مرحبًا بكم في Anas Bolm Iptv، المنصة الاحترافية لعرض IPTV والراديو.</p>
+      <p>تم إنشاء هذا الموقع بواسطة <strong>Anas Bolm</strong> لتقديم أفضل تجربة مشاهدة واستماع للمستخدمين.</p>
+      <p>للتواصل، زوروا صفحتي على <a href="https://www.instagram.com/bolm_a23?igsh=aXVxMHlyYmo0YmMy" target="_blank">Instagram</a>.</p>
+      <p>ولا تنسوا الصلاة والسلام على رسول الله صلى الله عليه وسلم.</p>
+      <p>نسعى لتقديم محتوى مجاني وعالي الجودة مع أحدث التقنيات والتصاميم.</p>
+    </section>
+
+    <!-- صفحة الإعدادات المتقدمة -->
+    <section id="settings">
+      <button class="back-btn" onclick="showSection('home')">عودة</button>
+      <h2>الإعدادات المتقدمة</h2>
+      <div class="settings-container">
+        <div class="setting-item">
+          <label for="theme-switch">تبديل الوضع (فاتح/داكن):</label>
+          <input type="checkbox" id="theme-switch" onchange="toggleTheme(this.checked)">
+        </div>
+        <div class="setting-item">
+          <label for="autoplay-toggle">تشغيل تلقائي:</label>
+          <input type="checkbox" id="autoplay-toggle">
+        </div>
+        <div class="setting-item">
+          <label for="volume-range">مستوى الصوت الافتراضي:</label>
+          <input type="range" id="volume-range" min="0" max="1" step="0.1" value="0.5" onchange="setDefaultVolume(this.value)">
+        </div>
+        <div class="setting-item">
+          <label for="font-size">حجم الخط:</label>
+          <input type="range" id="font-size" min="12" max="24" step="1" value="16" onchange="setFontSize(this.value)">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Anas Bolm Iptv. جميع الحقوق محفوظة.</p>
+    <div class="morocco-logo">
+      <!-- شعار المغرب (SVG) -->
+      <svg width="50" height="30" viewBox="0 0 5 3">
+        <rect width="5" height="3" fill="#c1272d"/>
+        <polygon points="2.5,0.5 2.8,1.5 3.5,1.5 3.0,2.0 3.2,2.8 2.5,2.3 1.8,2.8 2.0,2.0 1.5,1.5 2.2,1.5" fill="#006233"/>
+      </svg>
+    </div>
+  </footer>
+
+  <script>
+    /* تحديث الوقت في الهيدر */
+    function updateTime() {
+      const now = new Date();
+      document.getElementById("time").textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    /* دالة إظهار الأقسام */
+    function showSection(sectionId) {
+      document.querySelectorAll("main > section").forEach(sec => sec.style.display = "none");
+      document.getElementById(sectionId).style.display = "block";
+      // عند الانتقال للقسم الخاص بتصنيفات IPTV، يتم تحميلها
+      if(sectionId === "tv-categories") loadTVCategories();
+    }
+    // إظهار الصفحة الرئيسية مبدئيًا
+    showSection("home");
+
+    /* بيانات تصنيفات IPTV */
+    const tvCategories = [
+      { name: "Animation", url: "https://iptv-org.github.io/iptv/categories/animation.m3u" },
+      { name: "Auto", url: "https://iptv-org.github.io/iptv/categories/auto.m3u" },
+      { name: "Business", url: "https://iptv-org.github.io/iptv/categories/business.m3u" },
+      { name: "Classic", url: "https://iptv-org.github.io/iptv/categories/classic.m3u" },
+      { name: "Comedy", url: "https://iptv-org.github.io/iptv/categories/comedy.m3u" },
+      { name: "Cooking", url: "https://iptv-org.github.io/iptv/categories/cooking.m3u" },
+      { name: "Culture", url: "https://iptv-org.github.io/iptv/categories/culture.m3u" },
+      { name: "Documentary", url: "https://iptv-org.github.io/iptv/categories/documentary.m3u" },
+      { name: "Education", url: "https://iptv-org.github.io/iptv/categories/education.m3u" },
+      { name: "Entertainment", url: "https://iptv-org.github.io/iptv/categories/entertainment.m3u" },
+      { name: "Family", url: "https://iptv-org.github.io/iptv/categories/family.m3u" },
+      { name: "General", url: "https://iptv-org.github.io/iptv/categories/general.m3u" },
+      { name: "Kids", url: "https://iptv-org.github.io/iptv/categories/kids.m3u" },
+      { name: "Legislative", url: "https://iptv-org.github.io/iptv/categories/legislative.m3u" },
+      { name: "Lifestyle", url: "https://iptv-org.github.io/iptv/categories/lifestyle.m3u" },
+      { name: "Movies", url: "https://iptv-org.github.io/iptv/categories/movies.m3u" },
+      { name: "Music", url: "https://iptv-org.github.io/iptv/categories/music.m3u" },
+      { name: "News", url: "https://iptv-org.github.io/iptv/categories/news.m3u" },
+      { name: "Outdoor", url: "https://iptv-org.github.io/iptv/categories/outdoor.m3u" },
+      { name: "Relax", url: "https://iptv-org.github.io/iptv/categories/relax.m3u" },
+      { name: "Religious", url: "https://iptv-org.github.io/iptv/categories/religious.m3u" },
+      { name: "Science", url: "https://iptv-org.github.io/iptv/categories/science.m3u" },
+      { name: "Series", url: "https://iptv-org.github.io/iptv/categories/series.m3u" },
+      { name: "Shop", url: "https://iptv-org.github.io/iptv/categories/shop.m3u" },
+      { name: "Sports", url: "https://iptv-org.github.io/iptv/categories/sports.m3u" },
+      { name: "Travel", url: "https://iptv-org.github.io/iptv/categories/travel.m3u" },
+      { name: "Weather", url: "https://iptv-org.github.io/iptv/categories/weather.m3u" },
+      { name: "Other Categories", url: "https://iptv-org.github.io/iptv/categories/undefined.m3u" }
+    ];
+
+    /* تحميل تصنيفات IPTV وعرضها */
+    function loadTVCategories() {
+      const grid = document.getElementById("categories-grid");
+      grid.innerHTML = "";
+      tvCategories.forEach(cat => {
+        const card = document.createElement("div");
+        card.className = "category-card";
+        card.textContent = cat.name;
+        card.onclick = () => loadChannels(cat.url);
+        grid.appendChild(card);
+      });
+    }
+
+    /* جلب القنوات من ملف M3U وعرضها */
+    async function loadChannels(m3uUrl) {
+      showSection("tv-channels");
+      const channelsList = document.getElementById("channels-list");
+      channelsList.innerHTML = "<p>جاري التحميل...</p>";
+      try {
+        const response = await fetch(m3uUrl);
+        const text = await response.text();
+        const lines = text.split("\n");
+        const channels = [];
+        for (let i = 0; i < lines.length; i++) {
+          if (lines[i].startsWith("#EXTINF")) {
+            let parts = lines[i].split(",");
+            let name = parts[1] ? parts[1].trim() : "Unknown";
+            let url = (lines[i+1] || "").trim();
+            channels.push({ name, url });
+          }
+        }
+        channelsList.innerHTML = "";
+        channels.forEach(ch => {
+          const item = document.createElement("div");
+          item.className = "channel-item";
+          item.textContent = ch.name;
+          item.onclick = () => showTVPlayer(ch.name, ch.url);
+          channelsList.appendChild(item);
+        });
+      } catch (error) {
+        channelsList.innerHTML = "<p>حدث خطأ أثناء تحميل القنوات.</p>";
+      }
+    }
+
+    /* دوال مشغل IPTV */
+    function showTVPlayer(channelName, channelUrl) {
+      showSection("tv-player");
+      document.getElementById("channel-title").textContent = channelName;
+      const video = document.getElementById("tv-video");
+      video.src = channelUrl;
+      video.type = "application/x-mpegURL";
+      video.load();
+      video.play();
+    }
+    function playVideo() {
+      document.getElementById("tv-video").play();
+    }
+    function pauseVideo() {
+      document.getElementById("tv-video").pause();
+    }
+
+    /* بيانات إذاعات الراديو (بعض القنوات العالمية المجانية) */
+    const radioStations = [
+      { name: "Hot108", url: "http://sc.hot108.com:4000/" },
+      { name: "GR02 Station", url: "http://gr02.cdnstream.com:8170/" },
+      { name: "BBC World Service", url: "http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk" },
+      { name: "Radio France International", url: "http://icecast.radiofrance.fr/rfimonde" },
+      { name: "Deutsche Welle", url: "http://dwstream4-lh.akamaihd.net/i/dwstream4_live@110264/index_1_av-p.m3u8" }
+    ];
+
+    /* تحميل إذاعات الراديو وعرضها */
+    function loadRadioStations() {
+      const radioGrid = document.getElementById("radio-grid");
+      radioGrid.innerHTML = "";
+      radioStations.forEach(station => {
+        const div = document.createElement("div");
+        div.className = "radio-station";
+        div.textContent = station.name;
+        div.onclick = () => showRadioPlayer(station.name, station.url);
+        radioGrid.appendChild(div);
+      });
+    }
+    loadRadioStations();
+
+    /* دوال مشغل الراديو */
+    function showRadioPlayer(radioName, radioUrl) {
+      showSection("radio-player");
+      document.getElementById("radio-title").textContent = radioName;
+      const audio = document.getElementById("radio-audio");
+      audio.src = radioUrl;
+      audio.load();
+      audio.play();
+    }
+    function playRadio() {
+      document.getElementById("radio-audio").play();
+    }
+    function pauseRadio() {
+      document.getElementById("radio-audio").pause();
+    }
+
+    /* دالة IPTV مخصص: جلب القنوات من الرابط المدخل */
+    async function loadCustomIPTV() {
+      const url = document.getElementById("custom-url").value;
+      if (!url) {
+        alert("الرجاء إدخال رابط M3U");
+        return;
+      }
+      const customList = document.getElementById("custom-channels-list");
+      customList.innerHTML = "<p>جاري التحميل...</p>";
+      try {
+        const response = await fetch(url);
+        const text = await response.text();
+        const lines = text.split("\n");
+        const channels = [];
+        for (let i = 0; i < lines.length; i++) {
+          if (lines[i].startsWith("#EXTINF")) {
+            let parts = lines[i].split(",");
+            let name = parts[1] ? parts[1].trim() : "Unknown";
+            let channelUrl = (lines[i+1] || "").trim();
+            channels.push({ name, url: channelUrl });
+          }
+        }
+        customList.innerHTML = "";
+        channels.forEach(ch => {
+          const item = document.createElement("div");
+          item.className = "channel-item";
+          item.textContent = ch.name;
+          item.onclick = () => showTVPlayer(ch.name, ch.url);
+          customList.appendChild(item);
+        });
+      } catch (error) {
+        customList.innerHTML = "<p>حدث خطأ أثناء تحميل القنوات.</p>";
+      }
+    }
+
+    /* دوال الإعدادات */
+    function toggleTheme(isDark) {
+      if(isDark) {
+        document.body.style.background = "#121212";
+      } else {
+        document.body.style.background = "linear-gradient(135deg, #0f0c29, #302b63, #24243e)";
+      }
+    }
+    function setDefaultVolume(value) {
+      const video = document.getElementById("tv-video");
+      const audio = document.getElementById("radio-audio");
+      if(video) video.volume = value;
+      if(audio) audio.volume = value;
+    }
+    function setFontSize(value) {
+      document.body.style.fontSize = value + "px";
+    }
+  </script>
+</body>
+</html>
